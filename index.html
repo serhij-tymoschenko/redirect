@@ -3,47 +3,39 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Opening in Coinbase Wallet...</title>
+    <title>Opening in Coinbase Wallet Browser...</title>
 </head>
 <body>
 <p>
-    Opening in Base Browser (Coinbase Wallet)...<br />
-    <a id="manual" href="#">Click here if it doesn't open.</a>
+    Opening in Coinbase Wallet browser...<br />
+    <a id="manual" href="#">Click here if it doesn't open</a>
 </p>
 
 <script>
     (function () {
         const targetUrl = "https://mash-it.io/mashers?listing=429";
 
-        // Detect Android vs iOS
         const isAndroid = /Android/i.test(navigator.userAgent);
-        const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-        // Android: intent:// deep link
+        // iOS deep link: open in Coinbase Wallet Dapp Browser
+        const iosDeepLink =
+            "cbwallet://dapp?url=" + encodeURIComponent(targetUrl);
+
+        // Android deep link: open in Coinbase Wallet Dapp Browser
         const androidIntent =
-            "intent://go?url=" + encodeURIComponent(targetUrl) +
+            "intent://dapp?url=" + encodeURIComponent(targetUrl) +
             "#Intent;scheme=cbwallet;package=org.toshi;" +
             "S.browser_fallback_url=" + encodeURIComponent(targetUrl) +
             ";end";
 
-        // iOS: cbwallet:// deep link
-        const iosDeepLink =
-            "cbwallet://go?url=" + encodeURIComponent(targetUrl);
-
         const deepLink = isAndroid ? androidIntent : iosDeepLink;
 
-        // Update manual link correctly
         document.getElementById("manual").href = deepLink;
 
-        // Attempt auto-open
-        window.location.replace(deepLink);
+        // Attempt open
+        window.location.href = deepLink;
 
-        // Fallback attempts
-        setTimeout(() => {
-            window.location.href = deepLink;
-        }, 150);
-
-        // Final fallback to normal browser if wallet not installed / blocked
+        // Fallback to normal browser if blocked / not installed
         setTimeout(() => {
             window.location.href = targetUrl;
         }, 1500);
