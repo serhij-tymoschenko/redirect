@@ -28,7 +28,7 @@
             "package=org.toshi;" +  // Coinbase Wallet package
             "end";
 
-        const deepLink = isAndroid ? androidIntent : iosDeepLink;
+        const deepLink = isAndroid ? androidDeepLink : iosDeepLink;
 
         document.getElementById("manual").href = deepLink;
 
