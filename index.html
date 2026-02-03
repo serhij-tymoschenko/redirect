@@ -1,45 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Opening in Coinbase Wallet Browser...</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Open in Coinbase Wallet</title>
 </head>
 <body>
-<p>
-    Opening in Coinbase Wallet browser...<br />
-    <a id="manual" href="#">Click here if it doesn't open</a>
-</p>
+<p>Opening in Coinbase Wallet browser...</p>
+<a id="manual" href="#">Tap to open</a>
 
 <script>
-    (function () {
-        const targetUrl = "https://mash-it.io/mashers?listing=429";
+    const targetUrl = "https://mash-it.io/mashers?listing=429";
 
-        const isAndroid = /Android/i.test(navigator.userAgent);
+    const universal =
+        "https://go.cb-w.com/dapp?url=" + encodeURIComponent(targetUrl);
 
-        // iOS deep link: open in Coinbase Wallet Dapp Browser
-        const iosDeepLink =
-            "cbwallet://dapp?url=" + encodeURIComponent(targetUrl);
+    document.getElementById("manual").href = universal;
 
-        // Android deep link: open in Coinbase Wallet Dapp Browser
-        const androidIntent =
-            "intent://dapp?url=" + encodeURIComponent(targetUrl) +
-            "#Intent;scheme=cbwallet;package=org.toshi;" +
-            "S.browser_fallback_url=" + encodeURIComponent(targetUrl) +
-            ";end";
-
-        const deepLink = isAndroid ? androidIntent : iosDeepLink;
-
-        document.getElementById("manual").href = deepLink;
-
-        // Attempt open
-        window.location.href = deepLink;
-
-        // Fallback to normal browser if blocked / not installed
-        setTimeout(() => {
-            window.location.href = targetUrl;
-        }, 1500);
-    })();
+    // auto attempt
+    window.location.href = universal;
 </script>
 </body>
 </html>
