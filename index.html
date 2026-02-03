@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecting to Base...</title>
+</head>
+<body>
+<p>Redirecting to Base App... If nothing happens,
+    <a id="manualLink" href="#">click here</a>.
+</p>
+
+<script>
+    (function() {
+        // 1. SET YOUR LINK HERE
+        const myTargetUrl = "https://mash-it.io/mashers?listing=429";
+
+        // 2. Encode the URL so it's safe for the intent string
+        const encodedUrl = encodeURIComponent(myTargetUrl);
+
+        // 3. Construct the Intent
+        // We use 'cbwallet' as the scheme for the dApp browser path
+        const baseAppIntent = `intent://go?url=${encodedUrl}#Intent;scheme=cbwallet;package=org.toshi;S.browser_fallback_url=https://play.google.com/store/apps/details?id=org.toshi;end`;
+
+        // Update the manual link just in case
+        document.getElementById('manualLink').href = baseAppIntent;
+
+        // 4. MASH IT (Immediate redirect attempts)
+        window.location.replace(baseAppIntent);
+
+        setTimeout(function() {
+            window.location.href = baseAppIntent;
+        }, 100);
+    })();
+</script>
+</body>
+</html>
