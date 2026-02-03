@@ -1,34 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Launching DApp...</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Opening in Coinbase Wallet...</title>
 </head>
 <body>
-<p>Opening in Base Browser... <br>
+<p>
+    Opening in Base Browser (Coinbase Wallet)...<br />
     <a id="manual" href="#">Click here if it doesn't open.</a>
 </p>
 
 <script>
-    (function() {
-        // 1. The URL you want to open inside Base
+    (function () {
         const targetUrl = "https://mash-it.io/mashers?listing=429";
 
-        // 'go?url=' is the command that triggers the internal browser
-        const intentUri = "intent://go?url=" + encodeURIComponent(targetUrl) +
-            "#Intent;scheme=cbwallet;package=org.toshi;S.browser_fallback_url=" +
-            encodeURIComponent(targetUrl) + ";end";
+        // Detect Android vs iOS
+        const isAndroid = /Android/i.test(navigator.userAgent);
+        const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-        // Update the link for manual click
-        document.getElementById('link').href = intentUri;
+        // Android: intent:// deep link
+        const androidIntent =
+            "intent://go?url=" + encodeURIComponent(targetUrl) +
+            "#Intent;scheme=cbwallet;package=org.toshi;" +
+            "S.browser_fallback_url=" + encodeURIComponent(targetUrl) +
+            ";end";
 
-        // 3. The Mash: Multiple attempts to bypass browser security
-        window.location.replace(intentUri); // Priority 1
+        // iOS: cbwallet:// deep link
+        const iosDeepLink =
+            "cbwallet://go?url=" + encodeURIComponent(targetUrl);
 
+        const deepLink = isAndroid ? androidIntent : iosDeepLink;
+
+        // Update manual link correctly
+        document.getElementById("manual").href = deepLink;
+
+        // Attempt auto-open
+        window.location.replace(deepLink);
+
+        // Fallback attempts
         setTimeout(() => {
-            window.location.href = intentUri; // Priority 2
-        }, 100);
+            window.location.href = deepLink;
+        }, 150);
+
+        // Final fallback to normal browser if wallet not installed / blocked
+        setTimeout(() => {
+            window.location.href = targetUrl;
+        }, 1500);
     })();
 </script>
 </body>
