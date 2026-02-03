@@ -15,25 +15,20 @@
         // 1. The URL you want to open inside Base
         const targetUrl = "https://mash-it.io/mashers?listing=429";
 
-        // 2. Wrap it in the 'go' path and encode it
+        // 'go?url=' is the command that triggers the internal browser
         const intentUri = "intent://go?url=" + encodeURIComponent(targetUrl) +
             "#Intent;scheme=cbwallet;package=org.toshi;S.browser_fallback_url=" +
             encodeURIComponent(targetUrl) + ";end";
 
-        // Update manual link for safety
-        document.getElementById('manual').href = intentUri;
+        // Update the link for manual click
+        document.getElementById('link').href = intentUri;
 
-        // 3. The "Mash": Triple execution to bypass browser hang
-        window.location.replace(intentUri); // Attempt 1
-
-        setTimeout(() => {
-            window.location.href = intentUri; // Attempt 2
-        }, 50);
+        // 3. The Mash: Multiple attempts to bypass browser security
+        window.location.replace(intentUri); // Priority 1
 
         setTimeout(() => {
-            // Final attempt if user is still on this page
-            window.location = intentUri;
-        }, 250);
+            window.location.href = intentUri; // Priority 2
+        }, 100);
     })();
 </script>
 </body>
