@@ -18,14 +18,14 @@
         const isAndroid = /Android/i.test(navigator.userAgent);
 
         // iOS deep link: open in Coinbase Wallet Dapp Browser
-        const iosDeepLink = "cbwallet://dapp?url=" + encodeURIComponent(targetUrl);
+        const iosLink = "cbwallet://browser?url=" + encodeURIComponent(targetUrl);
 
 // Android deep link (without fallback)
         const androidDeepLink =
-            "intent://dapp?url=" + encodeURIComponent(targetUrl) +
+            "intent://browser?url=" + encodeURIComponent(targetUrl) +
             "#Intent;" +
-            "scheme=cbwallet;" +    // matches iOS scheme
-            "package=org.toshi;" +  // Coinbase Wallet package
+            "scheme=cbwallet;" +
+            "package=org.toshi;" +
             "end";
 
         const deepLink = isAndroid ? androidDeepLink : iosDeepLink;
