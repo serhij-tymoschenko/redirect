@@ -8,38 +8,9 @@
 <body>
 <p>
     Opening in Coinbase Wallet browser...<br />
-    <a id="manual" href="#">Click here if it doesn't open</a>
+    <a href="cbwallet://browser?url=https%3A%2F%2Fmash-it.io%2Fmashers%3Flisting%3D429">
+        Open in Base Browser
+    </a>
 </p>
-
-<script>
-    (function () {
-        const targetUrl = "https://mash-it.io/mashers?listing=429";
-
-        const isAndroid = /Android/i.test(navigator.userAgent);
-
-        // iOS deep link: open in Coinbase Wallet Dapp Browser
-        const iosLink = "cbwallet://browser?url=" + encodeURIComponent(targetUrl);
-
-// Android deep link (without fallback)
-        const androidDeepLink =
-            "intent://browser?url=" + encodeURIComponent(targetUrl) +
-            "#Intent;" +
-            "scheme=cbwallet;" +
-            "package=org.toshi;" +
-            "end";
-
-        const deepLink = isAndroid ? androidDeepLink : iosDeepLink;
-
-        document.getElementById("manual").href = deepLink;
-
-        // Attempt open
-        window.location.href = deepLink;
-
-        // Fallback to normal browser if blocked / not installed
-        setTimeout(() => {
-            window.location.href = targetUrl;
-        }, 1500);
-    })();
-</script>
 </body>
 </html>
